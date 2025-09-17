@@ -73,8 +73,11 @@ body{
 }
 .maplink{
 	position : relative;
-	width: 100px;
+	width: 60px;
 	height: auto;
+	/* 左寄せにする */
+    align-self: flex-start;
+    margin-left: 20px;
 }
 .maplink img{
 	width: 100%;
@@ -115,5 +118,6 @@ body {
   text-align: center;      /* テキスト中央寄せ */
   background-color: #f9f9f9; /* お好みで背景色 */
 }
+
 
 
