@@ -1,0 +1,41 @@
+﻿<!--　http://localhost/新町マップ/sinmati.html　を直接入力して開いて下さい 
+file:///C:/xampp/htdocs/新町マップ/sinmati.html　でうまくいく-->
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新町にぎわいマップ</title>
+<link rel="stylesheet" href="sinmatistyle.css">
+</head>
+<body>
+	<div class="header">
+		<h1><b class="sin">新町に</b><b>ぎわいマップ</b></h1>
+		<div class="gazou">
+			<img src="test1-3.png" alt="ねぶた画像"class="nebutagazou">
+			<img src="test2-4.png" alt="AOMORI画像"class="aomogazou">
+		</div>
+	</div>
+	<div id="kamerabutton">
+		<button id="kidou">カメラ起動</button>
+		<button id="teishi" style="display: none;">カメラ停止</button>
+	</div>
+	<div>
+		<div id="video-container">
+			<video id="video" autoplay playsinline muted style="display: none;"></video>
+			<img id="kameratoukawaku" src="kameratoukawaku.png" alt="カメラ枠" style="display: none;">
+		</div>
+		<button id="button">
+			<img src="tap.png" alt="tap画像"id="tapgazou">
+		</button>
+	</div>
+	<a href="./kadai1.html"class="maplink">
+		<img src="kkrn_icon_map_2.png" alt="mapへのリンク">
+	</a>
+	<div id="output">
+	</div>
+	<script src="sinmatiscript.js" defer></script>
+</body>
+</html>
+

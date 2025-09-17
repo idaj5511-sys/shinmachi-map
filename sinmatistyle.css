@@ -1,0 +1,118 @@
+﻿@charset "UTF-8";
+.header{
+	position : relative;
+	display: flex; /* これを追加 */
+	justify-content: center; /* これを追加 */
+	align-items: center; /* これを追加 */
+}
+
+h1{/*新町にぎわいマップ*/
+	font-size : 220%;
+	color : #008b8b;
+	font-family : cursive;
+	position : absolute;
+	top : 30%;
+	white-space : nowrap;
+	z-index: 20;
+}
+
+.sin{
+	font-weight: bolder;
+	-webkit-text-stroke: 1px rgba(255, 255, 255, 0.5); 
+}
+
+.nebutagazou{
+	position : relative;
+	left : -82px;
+	width : 55%;
+	margin : 0px;
+/*
+ねぶた画像
+https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25E5%2586%2599%25E7%259C%259F%2F%25E3%2581%25AD%25E3%2581%25B6%25E3%2581%259F%25E7%25A5%25AD&psig=AOvVaw1k_Er9Db3VWDjOeO9ZG_Yq&ust=1747114815243000&source=images&cd=vfe&opi=89978449&ved=0CBcQjhxqFwoTCJDmrIKcnY0DFQAAAAAdAAAAABAE
+*/
+}
+
+.aomogazou {
+	position : absolute;
+	right : 80%;
+	width : 20%;
+	z-index: 10;
+}
+
+#video {
+	display: block;
+	width : 100%;
+	max-width : 500px;
+	border : 2px solid #ccc;
+	margin : 0 auto 10px;
+	position: relative;
+	z-index: 10;
+	height: auto;
+}
+
+#button{
+	width: 20%;
+	padding: 0;
+	max-width: 100%;
+	position : relative;
+	border : transparent;
+	background-color:transparent;
+	margin : 10px auto;
+	display : flex;
+	justify-content : center;
+	align-items : center;
+}
+
+#tapgazou{
+	width : 100%
+}
+
+@media screen and (max-width: 480px){}
+body{
+	float : none;
+}
+.maplink{
+	position : relative;
+	width: 20%;
+	height: auto;
+}
+.maplink img{
+	width: 100%;
+	height: auto;
+}
+
+#kamerabutton{
+	display: flex;
+	gap: 10px;
+	justify-content: flex-start;
+	margin: 2% 5%;
+}
+
+#kidou, #teishi{
+	font-size: 100%;
+	border: none;
+}
+#video-container {
+	position: relative;
+	width: 100%;
+	max-width: 500px;
+	margin: 0 auto 10px;
+	display: inline-block;
+}
+#kameratoukawaku {
+	position: absolute;
+	pointer-events: none;
+	 z-index: 20;
+	top: 0;
+	left: 0;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;     /* 横方向中央 */
+  min-height: 100vh;       /* 画面の高さいっぱいに */
+  margin: 0;               /* 余白リセット */
+  text-align: center;      /* テキスト中央寄せ */
+  background-color: #f9f9f9; /* お好みで背景色 */
+}
+
