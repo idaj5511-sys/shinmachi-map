@@ -51,7 +51,7 @@ https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25
 }
 
 #button{
-	width: 100px;
+	width: 20%;
 	padding: 0;
 	max-width: 100%;
 	position : relative;
@@ -71,13 +71,23 @@ https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25
 body{
 	float : none;
 }
+.maplink-wrapper {
+	width: 100%;
+	max-width: 1000px;        /* 中央寄せの幅制限 */
+	margin: 0 auto;           /* 親要素（body）の中央に配置 */
+	display: flex;
+	justify-content: flex-start; /* 子要素を左寄せに */
+	padding-left: 20px;       /* 左に少し余白をつける */
+}
 .maplink{
-	position : relative;
+/*	position : relative;*/
 	width: 60px;
 	height: auto;
-	/* 左寄せにする */
-    align-self: flex-start;
-    margin-left: 20px;
+}
+@media screen and (min-width: 769px) {
+  .maplink {
+    margin-left: 300px; /* PCでは300px右にずらす */
+  }
 }
 .maplink img{
 	width: 100%;
@@ -118,6 +128,4 @@ body {
   text-align: center;      /* テキスト中央寄せ */
   background-color: #f9f9f9; /* お好みで背景色 */
 }
-
-
 
