@@ -43,7 +43,7 @@
   }
 
   // カメラ起動ボタン
-  startCameraBtn.addEventListener("click", () => {
+/*  startCameraBtn.addEventListener("click", () => {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       alert("カメラにアクセスできません。");
       return;
@@ -71,7 +71,49 @@
         alert("カメラの起動に失敗しました。");
         console.error(err);
       });
+  });*/
+  startCameraBtn.addEventListener("click", async () => {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert("カメラにアクセスできません。");
+      return;
+    }
+
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      const videoDevices = devices.filter(device => device.kind === "videoinput");
+
+      // 外カメラっぽいものを探す
+      const backCamera = videoDevices.find(device =>
+        /back|environment/i.test(device.label)
+      );
+
+      const constraints = backCamera
+        ? { video: { deviceId: { exact: backCamera.deviceId } } }
+        : { video: { facingMode: "environment" } }; // fallback
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+      cameraStream = stream;
+      video.srcObject = stream;
+      video.style.display = "block"; // 映像表示
+      kameratoukawaku.style.display = "block"; //カメラ枠表示
+      stopCameraBtn.style.display = "inline"; // 停止ボタン表示
+      startCameraBtn.style.display = "none";  // 起動ボタン非表示
+
+      video.addEventListener('loadedmetadata', () => {
+        updateFramePosition();
+      });
+
+      window.addEventListener('resize', () => {
+        updateFramePosition();
+      });
+
+    } catch (err) {
+      alert("カメラの起動に失敗しました。");
+      console.error(err);
+    }
   });
+
   // カメラ停止ボタン
   stopCameraBtn.addEventListener("click", () => {
     if (cameraStream) {
