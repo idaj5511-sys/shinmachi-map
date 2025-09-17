@@ -49,7 +49,7 @@
       return;
     }
 
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }})
       .then(stream => {
         cameraStream = stream;
         video.srcObject = stream;
