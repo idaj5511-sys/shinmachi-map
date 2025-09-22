@@ -17,25 +17,32 @@ file:///C:/xampp/htdocs/新町マップ/sinmati.html　でうまくいく-->
 			<img src="test2-4.png" alt="AOMORI画像"class="aomogazou">
 		</div>
 	</div>
-	<div id="kamerabutton">
-		<button id="kidou">カメラ起動</button>
-		<button id="teishi" style="display: none;">カメラ停止</button>
+	<div id="output">
 	</div>
-	<div>
-		<div id="video-container">
-			<video id="video" autoplay playsinline muted style="display: none;"></video>
-			<img id="kameratoukawaku" src="kameratoukawaku.png" alt="カメラ枠" style="display: none;">
-		</div>
-		<button id="button">
-			<img src="tap.png" alt="tap画像"id="tapgazou">
-		</button>
-	</div>
+	<button id="button">
+		<img src="tap.png" alt="tap画像"id="tapgazou">
+	</button>
 	<div class="maplink-wrapper">
 		<a href="./kadai1.html"class="maplink">
 			<img src="kkrn_icon_map_2.png" alt="mapへのリンク">
 		</a>
 	</div>
-	<div id="output">
+
+	<div id="kamerabutton">
+		<button id="kidou">カメラ起動</button>
+		<button id="teishi" style="display: none;">カメラ停止</button>
+	</div>
+
+	<div id="video-container">
+		<video id="video" autoplay playsinline muted style="display: none;"></video>
+		<img id="kameratoukawaku" src="kameratoukawaku.png" alt="カメラ枠" style="display: none;">
+	</div>
+	<div id="shutter-container">
+		<button id="shutter-button" style="display: none;">撮影</button>
+	</div>
+	<div id="photo-container">
+		<canvas id="photo-canvas" style="display: none;"></canvas>
+		<img id="photo-img" style="display: none;">
 	</div>
 	<script src="sinmatiscript.js" defer></script>
 </body>
