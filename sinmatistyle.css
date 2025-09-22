@@ -100,7 +100,9 @@ body{
 	justify-content: flex-start;
 	margin: 2% 5%;
 }
-
+.satueigazou{
+	width:20px;
+}
 #kidou, #teishi{
 	font-size: 100%;
 	border: none;
@@ -128,4 +130,5 @@ body {
   text-align: center;      /* テキスト中央寄せ */
   background-color: #f9f9f9; /* お好みで背景色 */
 }
+
 
