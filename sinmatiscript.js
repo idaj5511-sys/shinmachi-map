@@ -131,23 +131,26 @@
 			frameImage.src = "kameratoukawaku.png";
         
 			frameImage.onload = () => {
-			// 枠画像のサイズを調整
-			const frameWidth = photoCanvas.width * 0.5;
-			const frameHeight = frameWidth * (frameImage.naturalHeight / frameImage.naturalWidth);
+				// 枠画像のサイズを調整
+				const frameWidth = photoCanvas.width * 0.5;
+				const frameHeight = frameWidth * (frameImage.naturalHeight / frameImage.naturalWidth);
 
-			// 枠画像を描画する位置を計算
-			const frameX = photoCanvas.width - frameWidth;
-			const frameY = photoCanvas.height - frameHeight;
+				// 枠画像を描画する位置を計算
+				const frameX = photoCanvas.width - frameWidth;
+				const frameY = photoCanvas.height - frameHeight;
 
-			// Canvasに枠画像を描画（元の画像の上に重ねる）
-			context.drawImage(frameImage, frameX, frameY, frameWidth, frameHeight);
+				// Canvasに枠画像を描画（元の画像の上に重ねる）
+				context.drawImage(frameImage, frameX, frameY, frameWidth, frameHeight);
             
-			// 3. 合成したCanvasの内容を画像データに変換
-			const imageDataUrl = photoCanvas.toDataURL("image/png");
+				// 3. 合成したCanvasの内容を画像データに変換
+				const imageDataUrl = photoCanvas.toDataURL("image/png");
 
-			// 4. 画像を表示するimgタグにデータを設定し、表示
-			photoImg.src = imageDataUrl;
-			photoImg.style.display = "block";
+				// 4. 画像を表示するimgタグにデータを設定し、表示
+				photoImg.src = imageDataUrl;
+				photoImg.style.display = "block";
+
+				photoImg.width = video.clientWidth;
+				photoImg.height = video.clientHeight;
 			};
         
 			frameImage.onerror = () => {
