@@ -147,6 +147,6 @@ body {/*中央揃え*/
 	margin: 0;               /* 余白リセット */
 	text-align: center;      /* テキスト中央寄せ */
 	background-color: #f9f9f9; /* お好みで背景色 */
-	justify-content: center; /* 縦方向中央揃え */
 }
+
 
