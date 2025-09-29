@@ -129,7 +129,7 @@
 			// 2. カメラ枠画像を読み込み、Canvasに描画
 			const frameImage = new Image();
 			frameImage.src = "kameratoukawaku.png";
-        
+
 			frameImage.onload = () => {
 				// 枠画像のサイズを調整
 				const frameWidth = photoCanvas.width * 0.5;
@@ -141,18 +141,44 @@
 
 				// Canvasに枠画像を描画（元の画像の上に重ねる）
 				context.drawImage(frameImage, frameX, frameY, frameWidth, frameHeight);
-            
-				// 3. 合成したCanvasの内容を画像データに変換
-				const imageDataUrl = photoCanvas.toDataURL("image/png");
 
+				// 3. 合成したCanvasの内容を画像データに変換
+				//const imageDataUrl = photoCanvas.toDataURL("image/png");
+				photoCanvas.toBlob((blob) => {
+					if (blob) {
+						// BlobからURLを作成
+						const url = URL.createObjectURL(blob);
+						// ダウンロード用の<a>要素を作成
+						const a = document.createElement('a');
+						a.href = url;
+						// ダウンロードファイル名を設定（例：撮影日時にする）
+						const now = new Date();
+						const filename = `aomori_photo_${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}.png`;
+						a.download = filename;
+
+						// <a>要素を自動クリックしてダウンロードを開始
+						document.body.appendChild(a); // リンクをDOMに追加
+						a.click(); // ダウンロードを実行
+						document.body.removeChild(a); // リンクをDOMから削除
+
+						// 不要になったBlob URLを解放
+						URL.revokeObjectURL(url);
+						
+						alert("写真をダウンロードしました！"); // 完了メッセージ
+					} else {
+						alert("画像データの作成に失敗しました。");
+					}
+				}, 'image/png'); // 画像形式を指定
+
+				/*
 				// 4. 画像を表示するimgタグにデータを設定し、表示
 				photoImg.src = imageDataUrl;
 				photoImg.style.display = "block";
 
 				photoImg.width = video.clientWidth;
-				photoImg.height = video.clientHeight;
+				photoImg.height = video.clientHeight;*/
 			};
-        
+
 			frameImage.onerror = () => {
 				alert("カメラ枠画像の読み込みに失敗しました。");
 				// 枠画像なしで元の画像を表示するフォールバック処理
@@ -343,7 +369,7 @@
 			outputDiv.innerHTML += `<br>`;
 			// 店舗情報表示（店舗名・住所は1回だけ、おすすめはすべて表示）
 			outputDiv.innerHTML += `<strong>おすすめ店舗情報</strong><br>`;
-	
+
 			// 店舗名でグルーピング
 			const shopsGrouped = {};
 			matchedShops.forEach(shop => {
