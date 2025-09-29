@@ -510,24 +510,23 @@ window.addEventListener('DOMContentLoaded', () => {
 		const topPosition = videoContainerRect.top + video.clientHeight - buttonRect.height - offsetBottom;
 		
 		// 左右の位置（Left）を計算 (動画コンテナの幅の中央に配置)
-		// 動画コンテナのLeft + (動画コンテナの幅 / 2) - (ボタンの幅 / 2)
 		const leftPosition = videoContainerRect.left + (videoContainerRect.width / 2) - (buttonRect.width / 2);
 		
 		shutterButton.style.position = 'absolute';
 		// スクロール量を加えることで、スクロールしても画面上の同じ位置を維持
 		shutterButton.style.top = `${topPosition + window.scrollY}px`;
 		shutterButton.style.left = `${leftPosition}px`;
+		shutterButton.style.zIndex = 30;
 	}
     
     // ? リサイズとスクロールのイベントリスナーをDOMContentLoaded直下に登録 (重複登録を防止) ?
-	window.addEventListener('resize', () => {
+	const handleCameraResize = () => {
 		updateFramePosition();
 		updateShutterButtonPosition();
-	});
-	window.addEventListener('scroll', () => {
+	};
+	const handleCameraScroll = () => {
 		updateShutterButtonPosition();
-	});
-
+	};
 	// カメラ起動ボタン
 	startCameraBtn.addEventListener("click", () => {
 		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -549,19 +548,15 @@ window.addEventListener('DOMContentLoaded', () => {
 			// 動画のメタデータが読み込まれたら位置を調整
 			video.addEventListener('loadedmetadata', () => {
 				updateFramePosition();
-				updateShutterButtonPosition();
-			});
-
-			// カメラ映像が読み込まれたらシャッターボタンを表示
-			video.addEventListener('loadedmetadata', () => {
-				updateFramePosition();
 				if (shutterButton) {
 					shutterButton.style.display = "block";
 					updateShutterButtonPosition();
 				}
-			}, { once: true }); // イベントリスナーを1回だけ実行
-		})
-		.catch(err => {
+			}, { once: true });
+
+			window.addEventListener('resize', handleCameraResize);
+			window.addEventListener('scroll', handleCameraScroll);
+		})		.catch(err => {
 			alert("カメラの起動に失敗しました。");
 			console.error(err);
 		});
@@ -590,6 +585,8 @@ window.addEventListener('DOMContentLoaded', () => {
 		if (photoImg) {
 			photoImg.style.display = "none";
 		}
+		window.removeEventListener('resize', handleCameraResize);
+		window.removeEventListener('scroll', handleCameraScroll);
 	});
 
 	// 撮影ボタンのクリックイベント
