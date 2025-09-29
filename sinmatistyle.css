@@ -16,30 +16,30 @@ h1{/*新町にぎわいマップ*/
 	z-index: 20;
 }
 
-.sin{
+.sin{/*白い縁*/
 	font-weight: bolder;
 	-webkit-text-stroke: 1px rgba(255, 255, 255, 0.5); 
 }
 
-.nebutagazou{
+.nebutagazou{/*輪っかのねぶたの画像*/
 	position : relative;
 	left : -82px;
 	width : 55%;
 	margin : 0px;
 /*
-ねぶた画像
+ねぶた画像url
 https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25E5%2586%2599%25E7%259C%259F%2F%25E3%2581%25AD%25E3%2581%25B6%25E3%2581%259F%25E7%25A5%25AD&psig=AOvVaw1k_Er9Db3VWDjOeO9ZG_Yq&ust=1747114815243000&source=images&cd=vfe&opi=89978449&ved=0CBcQjhxqFwoTCJDmrIKcnY0DFQAAAAAdAAAAABAE
 */
 }
 
-.aomogazou {
+.aomogazou {/*輪っかのaomoriの画像*/
 	position : absolute;
 	right : 80%;
 	width : 20%;
 	z-index: 10;
 }
 
-#video {
+#video {/*カメラの映像*/
 	display: block;
 	width : 100%;
 	max-width : 500px;
@@ -50,7 +50,7 @@ https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25
 	height: auto;
 }
 
-#button{
+#button{/*現在地取得ボタン*/
 	width: 100px;
 	padding: 0;
 	max-width: 100%;
@@ -63,15 +63,12 @@ https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25
 	align-items : center;
 }
 
-#tapgazou{
+#tapgazou{/*現在地表示のtap画像*/
 	width : 100%
 }
 
-@media screen and (max-width: 480px){}
-body{
-	float : none;
-}
-.maplink-wrapper {
+@media screen and (max-width: 480px){}/*スマホでも*/
+.maplink-wrapper {/*マップページに飛ぶ画像*/
 	width: 100%;
 	max-width: 1000px;        /* 中央寄せの幅制限 */
 	margin: 0 auto;           /* 親要素（body）の中央に配置 */
@@ -79,53 +76,70 @@ body{
 	justify-content: flex-start; /* 子要素を左寄せに */
 	padding-left: 20px;       /* 左に少し余白をつける */
 }
-.maplink{
+.maplink{/*マップページurl*/
 /*	position : relative;*/
 	width: 60px;
 	height: auto;
 }
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 769px) {/*マップ画像の位置調節*/
   .maplink {
     margin-left: 300px; /* PCでは300px右にずらす */
   }
 }
-.maplink img{
+.maplink img{/*マップ画像サイズ設定*/
 	width: 100%;
 	height: auto;
 }
 
-#kamerabutton{
+#kamerabutton{/*カメラ起動ボタン*/
 	display: flex;
 	gap: 10px;
 	justify-content: flex-start;
 	margin: 2% 5%;
 }
-#shutter-button{
-	width:100px;
-	height:auto;
+#shutter-button{/*撮影ボタン*/
+/*	width: 100px;
+	height: auto;
+	display: flex;
+	gap: 10px;
+	justify-content: flex-start;
+	border:none;
+	background:none;*/
+	position: absolute;  /* 追加 */
+	bottom: 5px;        /* カメラ映像下から5px上に配置 */
+	left: 50%;           /* 横方向中央 */
+	transform: translateX(-50%); /* 中央寄せのため */
+	width: 70px;        /* 元々の幅を維持 */
+	height: auto;
+	border: none;
+	background: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 30;         /* カメラ枠より上に表示 */
 }
-#satueigazou{
+#satueigazou{/*撮影ボタン画像*/
 	width:100%;
 }
-#kidou, #teishi{
+#kidou, #teishi{/*カメラ起動・停止ボタン*/
 	font-size: 100%;
 	border: none;
 }
-#video-container {
+#video-container {/*カメラの映像・カメラ枠*/
 	position: relative;
 	width: 100%;
 	max-width: 500px;
 	margin: 0 auto 10px;
 	display: inline-block;
 }
-#kameratoukawaku {
+#kameratoukawaku {/*カメラ枠*/
 	position: absolute;
 	pointer-events: none;
 	 z-index: 20;
 	top: 0;
 	left: 0;
 }
-body {
+body {/*中央揃え*/
   display: flex;
   flex-direction: column;
   align-items: center;     /* 横方向中央 */
@@ -134,6 +148,4 @@ body {
   text-align: center;      /* テキスト中央寄せ */
   background-color: #f9f9f9; /* お好みで背景色 */
 }
-
-
 
