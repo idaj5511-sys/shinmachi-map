@@ -44,6 +44,33 @@
 
 		kameratoukawaku.style.zIndex = 20;
 	}
+	function updateShutterButtonPosition() {
+		if (video.style.display === "none" || !shutterButton) return;
+
+			const videoRect = video.getBoundingClientRect();
+			const buttonRect = shutterButton.getBoundingClientRect(); // ボタンの現在のサイズを取得
+
+			// 動画コンテナ全体（画面に対する絶対位置）を取得
+			const videoContainerRect = document.getElementById("video-container").getBoundingClientRect();
+
+			// 動画の下辺からのオフセット
+			const offsetBottom = 10; // 10px
+
+			// 画面上部からの位置（Top）を計算
+			// 動画コンテナのTop + 動画コンテナの高さ - ボタンの高さ - オフセット
+			const topPosition = videoContainerRect.top + videoContainerRect.height - buttonRect.height - offsetBottom;
+
+			// 左右の位置（Left）を計算 (動画コンテナの幅の中央に配置)
+			// 動画コンテナのLeft + (動画コンテナの幅 / 2) - (ボタンの幅 / 2)
+			const leftPosition = videoContainerRect.left + (videoContainerRect.width / 2) - (buttonRect.width / 2);
+
+			// スタイルを設定 (fixed や absolute の場合、window.scrollY を加算する必要があるが、
+			// 親要素が body の子であり、relativeな親要素を持たない絶対配置として扱う)
+			shutterButton.style.position = 'absolute'; // CSSで設定済みだが念のため
+			shutterButton.style.top = `${topPosition + window.scrollY}px`; // スクロール位置を考慮して絶対位置を設定
+			shutterButton.style.left = `${leftPosition}px`;
+			// shutterContainerの高さが0なので、shutterButtonを直接操作する
+	}
 
 	// カメラ起動ボタン
 		startCameraBtn.addEventListener("click", () => {
@@ -65,6 +92,8 @@
 
 			video.addEventListener('loadedmetadata', () => {
 				updateFramePosition();
+				//動画ロード後にボタン位置も更新
+				updateShutterButtonPosition(); 
 			});
 
 			// カメラ映像が読み込まれたらシャッターボタンを表示
@@ -72,6 +101,7 @@
 				updateFramePosition();
 				if (shutterButton) {
 					shutterButton.style.display = "block";
+					updateShutterButtonPosition(); 
 				}
 			}, { once: true }); // イベントリスナーを1回だけ実行
 
@@ -79,7 +109,12 @@
 			// ウィンドウリサイズ時も位置更新
 			window.addEventListener('resize', () => {
 				updateFramePosition();
+				updateShutterButtonPosition();
 			});
+			window.addEventListener('scroll', () => {
+				updateShutterButtonPosition();
+			});
+
 		})
 		.catch(err => {
 			alert("カメラの起動に失敗しました。");
@@ -100,6 +135,9 @@
 		// 撮影ボタンと写真を非表示にする
         	if (shutterButton) {
 			shutterButton.style.display = "none";
+			shutterButton.style.position = '';
+			shutterButton.style.top = '';
+			shutterButton.style.left = '';
         	}
         	if (photoImg) {
 			photoImg.style.display = "none";
@@ -163,7 +201,8 @@
 
 						// 不要になったBlob URLを解放
 						URL.revokeObjectURL(url);
-
+						
+						alert("写真をダウンロードしました！"); // 完了メッセージ
 					} else {
 						alert("画像データの作成に失敗しました。");
 					}
@@ -411,4 +450,3 @@
 		);
   	});
 });
-
