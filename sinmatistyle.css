@@ -140,12 +140,13 @@ https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25
 	left: 0;
 }
 body {/*中央揃え*/
-  display: flex;
-  flex-direction: column;
-  align-items: center;     /* 横方向中央 */
-  min-height: 100vh;       /* 画面の高さいっぱいに */
-  margin: 0;               /* 余白リセット */
-  text-align: center;      /* テキスト中央寄せ */
-  background-color: #f9f9f9; /* お好みで背景色 */
+	display: flex;
+	flex-direction: column;
+	align-items: center;     /* 横方向中央 */
+	min-height: 100vh;       /* 画面の高さいっぱいに */
+	margin: 0;               /* 余白リセット */
+	text-align: center;      /* テキスト中央寄せ */
+	background-color: #f9f9f9; /* お好みで背景色 */
+	justify-content: center; /* 縦方向中央揃え */
 }
 
