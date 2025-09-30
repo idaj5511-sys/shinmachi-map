@@ -34,7 +34,7 @@ https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25
 
 .aomogazou {/*輪っかのaomoriの画像*/
 	position : absolute;
-	right : 80%;
+	right : 78%;
 	width : 20%;
 	z-index: 10;
 }
@@ -150,5 +150,6 @@ body {/*中央揃え*/
 	position: relative; /* 子要素の絶対配置の基準にする */
 	height: 0; /* 通常のフローでの高さを0にして、画面上のスペースを取らないようにする */
 }
+
 
 s
