@@ -496,7 +496,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	// ? 撮影ボタンの位置を更新する関数 (修正済み) ?
 	function updateShutterButtonPosition() {
-		if (video.style.display === "none" || !shutterButton) return;
+	/*	if (video.style.display === "none" || !shutterButton) return;
 		
 		const videoContainer = document.getElementById("video-container");
 		const buttonRect = shutterButton.getBoundingClientRect(); // ボタンの現在のサイズを取得
@@ -516,7 +516,30 @@ window.addEventListener('DOMContentLoaded', () => {
 		// スクロール量を加えることで、スクロールしても画面上の同じ位置を維持
 		shutterButton.style.top = `${topPosition + window.scrollY}px`;
 		shutterButton.style.left = `${leftPosition}px`;
-		shutterButton.style.zIndex = 30;
+		shutterButton.style.zIndex = 30;*/
+		if (video.style.display === "none" || kameratoukawaku.style.display === "none" || !shutterButton) return;
+		
+		// カメラ枠とボタンの画面上の位置とサイズを取得
+		const frameRect = kameratoukawaku.getBoundingClientRect();
+		const buttonRect = shutterButton.getBoundingClientRect();
+
+		// カメラ枠からのオフセット（枠の下にどれだけ離すか）
+		const offsetBottom = 100; // 5px下に配置
+		
+		// ボタンのTop位置を計算
+		// [カメラ枠の下辺の位置] + [オフセット] + [縦のスクロール量]
+	//	const topPosition = frameRect.bottom + offsetBottom + window.scrollY;
+		const topPosition = -offsetBottom;
+		
+		// ボタンのLeft位置を計算 (カメラ枠に対して中央に配置)
+		// [カメラ枠の左辺の位置] + [カメラ枠の幅の半分] - [ボタンの幅の半分] + [横のスクロール量]
+	//	const leftPosition = frameRect.left + (frameRect.width / 2) - (buttonRect.width / 2) + window.scrollX;
+		
+		// 計算したスタイルをボタンに適用
+		shutterButton.style.position = 'absolute';
+		shutterButton.style.top = `${topPosition}px`;
+	//	shutterButton.style.left = `${leftPosition}px`;
+		shutterButton.style.zIndex = 30; // 他の要素より手前に表示
 	}
     
     // ? リサイズとスクロールのイベントリスナーをDOMContentLoaded直下に登録 (重複登録を防止) ?

@@ -98,13 +98,6 @@ https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25
 	margin: 2% 5%;
 }
 #shutter-button{/*撮影ボタン*/
-/*	width: 100px;
-	height: auto;
-	display: flex;
-	gap: 10px;
-	justify-content: flex-start;
-	border:none;
-	background:none;*/
 	position: absolute;  /* 追加 */
 	bottom: 5px;        /* カメラ映像下から5px上に配置 */
 	left: 50%;           /* 横方向中央 */
@@ -117,6 +110,7 @@ https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25
 	justify-content: center;
 	align-items: center;
 	z-index: 30;         /* カメラ枠より上に表示 */
+	display: none;
 }
 #satueigazou{/*撮影ボタン画像*/
 	width:100%;
@@ -148,5 +142,13 @@ body {/*中央揃え*/
 	text-align: center;      /* テキスト中央寄せ */
 	background-color: #f9f9f9; /* お好みで背景色 */
 }
+#shutter-container {
+	position: relative;
+	width: 100%; /* 全幅を使用 */
+	max-width: 500px; /* 動画コンテナと同じ最大幅 */
+	margin: 0 auto; /* 中央寄せ */
+	position: relative; /* 子要素の絶対配置の基準にする */
+	height: 0; /* 通常のフローでの高さを0にして、画面上のスペースを取らないようにする */
+}
 
-
+s
