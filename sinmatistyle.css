@@ -149,7 +149,8 @@ body {/*中央揃え*/
 	margin: 0 auto; /* 中央寄せ */
 	position: relative; /* 子要素の絶対配置の基準にする */
 	height: 0; /* 通常のフローでの高さを0にして、画面上のスペースを取らないようにする */
+	font-family : "Hiragino Kaku Gothic ProN W6","MS Pゴシック",cursive;
 }
-
-
-s
+#frame-selector {
+  display: none;
+}

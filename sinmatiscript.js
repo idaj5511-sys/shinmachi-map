@@ -1,4 +1,4 @@
-window.addEventListener('DOMContentLoaded', () => {
+﻿window.addEventListener('DOMContentLoaded', () => {
 	const startCameraBtn = document.getElementById("kidou");
 	const stopCameraBtn = document.getElementById("teishi");
 	const video = document.getElementById("video");
@@ -7,11 +7,38 @@ window.addEventListener('DOMContentLoaded', () => {
 	const outputDiv = document.getElementById("output");
 	const kameratoukawaku = document.getElementById("kameratoukawaku");
 	const shutterButton = document.getElementById("shutter-button");
-	// shutterContainer は、今回は直接使わず、videoContainerの位置を参照します
-	// const shutterContainer = document.getElementById("shutter-container"); 
 	const photoCanvas = document.getElementById("photo-canvas");
 	const photoImg = document.getElementById("photo-img");
+	const frame1 = document.getElementById("kameratoukawaku");
+	const frame2 = document.getElementById("shinmarukun");
+	const frameRadios = document.querySelectorAll('input[name="frame_choice"]');
+	const frameSelector = document.getElementById("frame-selector");
+
 	let cameraStream = null;
+
+	function updateLiveFrame() {
+		const selectedValue = document.querySelector('input[name="frame_choice"]:checked').value;
+		
+		// 選択に応じてフレームの表示・非表示を切り替え
+		if (selectedValue === "kameratoukawaku.png") {
+			frame1.style.display = "block";
+			frame2.style.display = "none";
+		} else {
+			frame1.style.display = "none";
+			frame2.style.display = "block";
+		}
+		// 位置を再計算
+		updateFramePosition();
+	}
+
+	// ラジオボタンが変更されたら、ライブプレビューのフレームを更新
+	frameRadios.forEach(radio => {
+		radio.addEventListener('change', () => {
+			if (cameraStream) { // カメラが起動している時だけ更新
+				updateLiveFrame();
+			}
+		});
+	});
 
 	// 枠画像が読み込まれたら位置調整する
 	kameratoukawaku.addEventListener('load', () => {
@@ -23,7 +50,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	function updateFramePosition() {
 		if (video.style.display === "none") return; // 非表示なら処理しない
 
-		const rect = video.getBoundingClientRect();
+/*		const rect = video.getBoundingClientRect();
 		const videoWidth = rect.width;
 		const videoHeight = rect.height;
 
@@ -43,7 +70,29 @@ window.addEventListener('DOMContentLoaded', () => {
 		kameratoukawaku.style.left = `${offsetX + videoWidth - frameWidth}px`;
 		kameratoukawaku.style.top = `${offsetY + videoHeight - frameHeight}px`;
 
-		kameratoukawaku.style.zIndex = 20;
+		kameratoukawaku.style.zIndex = 20;*/
+	// 現在表示されているフレーム要素を取得
+		const currentFrame = document.querySelector('#video-container img[style*="display: block"]');
+		if (!currentFrame) return; // 表示中のフレームがなければ何もしない
+
+		const rect = video.getBoundingClientRect();
+		const videoWidth = rect.width;
+		const videoHeight = rect.height;
+
+		const frameWidth = videoWidth * 0.5;
+		// currentFrameの自然サイズを使うように変更
+		const frameHeight = frameWidth * (currentFrame.naturalHeight / currentFrame.naturalWidth);
+
+		currentFrame.style.width = `${frameWidth}px`;
+		currentFrame.style.height = `${frameHeight}px`;
+	
+		const offsetX = video.offsetLeft;
+		const offsetY = video.offsetTop;
+
+		currentFrame.style.position = "absolute";
+		currentFrame.style.left = `${offsetX + videoWidth - frameWidth}px`;
+		currentFrame.style.top = `${offsetY + videoHeight - frameHeight}px`;
+		currentFrame.style.zIndex = 20;
 	}
 
 	// ? 撮影ボタンの位置を更新する関数 (修正済み) ?
@@ -94,9 +143,11 @@ window.addEventListener('DOMContentLoaded', () => {
 			cameraStream = stream;
 			video.srcObject = stream;
 			video.style.display = "block"; // 映像表示
-			kameratoukawaku.style.display = "block"; //カメラ枠表示
+			//kameratoukawaku.style.display = "block"; //カメラ枠表示
+			updateLiveFrame();
 			stopCameraBtn.style.display = "inline"; // 停止ボタン表示
 			startCameraBtn.style.display = "none"; // 起動ボタン非表示
+			frameSelector.style.display = "block";
 
 			// 動画のメタデータが読み込まれたら位置を調整
 			video.addEventListener('loadedmetadata', () => {
@@ -123,9 +174,12 @@ window.addEventListener('DOMContentLoaded', () => {
 			video.srcObject = null;
 		}
 		video.style.display = "none"; // 映像非表示
-		kameratoukawaku.style.display = "none"; // カメラ枠非表示
+//		kameratoukawaku.style.display = "none"; // カメラ枠非表示
+		frame1.style.display = "none";
+		frame2.style.display = "none"; 
 		stopCameraBtn.style.display = "none"; // 停止ボタン非表示
 		startCameraBtn.style.display = "inline"; // 起動ボタン表示
+		frameSelector.style.display = "none";
 		
 		// 撮影ボタンと写真を非表示にする
 		if (shutterButton) {
@@ -155,7 +209,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				return;
 			}
 
-			photoCanvas.width = video.videoWidth;
+/*			photoCanvas.width = video.videoWidth;
 			photoCanvas.height = video.videoHeight;
 			const context = photoCanvas.getContext("2d");
 
@@ -165,6 +219,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			// 2. カメラ枠画像を読み込み、Canvasに描画
 			const frameImage = new Image();
 			frameImage.src = "kameratoukawaku.png";
+			frameImage2.src = "新丸くん4.png";
 
 			frameImage.onload = () => {
 				// 枠画像のサイズを調整
@@ -222,6 +277,145 @@ window.addEventListener('DOMContentLoaded', () => {
 						document.body.removeChild(a);
 						URL.revokeObjectURL(url);
 						alert("写真をダウンロードしました！（枠画像なし）");
+					} else {
+						alert("画像データの作成に失敗しました。");
+					}
+				}, 'image/png');
+			};
+			frameImage2.onload = () => {
+				// 枠画像のサイズを調整
+				const frameWidth = photoCanvas.width * 0.5;
+				const frameHeight = frameWidth * (frameImage.naturalHeight / frameImage.naturalWidth);
+
+				// 枠画像を描画する位置を計算
+				const frameX = photoCanvas.width - frameWidth;
+				const frameY = photoCanvas.height - frameHeight;
+
+				// Canvasに枠画像を描画（元の画像の上に重ねる）
+				context.drawImage(frameImage, frameX, frameY, frameWidth, frameHeight);
+
+				// 3. 合成したCanvasの内容をBlobに変換し、ダウンロード処理
+				photoCanvas.toBlob((blob) => {
+					if (blob) {
+						// BlobからURLを作成
+						const url = URL.createObjectURL(blob);
+						// ダウンロード用の<a>要素を作成
+						const a = document.createElement('a');
+						a.href = url;
+						// ダウンロードファイル名を設定（例：撮影日時にする）
+						const now = new Date();
+						const filename = `aomori_photo_${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}.png`;
+						a.download = filename;
+
+						// <a>要素を自動クリックしてダウンロードを開始
+						document.body.appendChild(a); // リンクをDOMに追加
+						a.click(); // ダウンロードを実行
+						document.body.removeChild(a); // リンクをDOMから削除
+
+						// 不要になったBlob URLを解放
+						URL.revokeObjectURL(url);
+						
+						alert("写真をダウンロードしました！"); // 完了メッセージ
+					} else {
+						alert("画像データの作成に失敗しました。");
+					}
+				}, 'image/png'); // 画像形式を指定
+			};
+
+			frameImage.onerror = () => {
+				alert("カメラ枠画像の読み込みに失敗しました。");
+				// 枠画像なしで元の画像を表示するフォールバック処理 (ダウンロード機能は維持)
+				photoCanvas.toBlob((blob) => {
+					if (blob) {
+						const url = URL.createObjectURL(blob);
+						const a = document.createElement('a');
+						a.href = url;
+						const now = new Date();
+						const filename = `aomori_photo_fallback_${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}.png`;
+						a.download = filename;
+						document.body.appendChild(a);
+						a.click();
+						document.body.removeChild(a);
+						URL.revokeObjectURL(url);
+						alert("写真をダウンロードしました！（枠画像なし）");
+					} else {
+						alert("画像データの作成に失敗しました。");
+					}
+				}, 'image/png');*/
+        // 1. 選択されているラジオボタンから、使用するフレーム画像のファイル名を取得
+			const selectedFrameSrc = document.querySelector('input[name="frame_choice"]:checked').value;
+        
+			if (!selectedFrameSrc) {
+				alert("フレームが選択されていません。");
+				return;
+			}
+
+			const context = photoCanvas.getContext("2d");
+			photoCanvas.width = video.videoWidth;
+			photoCanvas.height = video.videoHeight;
+
+			// 2. Canvasに動画の現在のフレームを描画
+			context.drawImage(video, 0, 0, photoCanvas.width, photoCanvas.height);
+
+			// 3. ユーザーが選択したフレーム画像を読み込み、Canvasに描画
+			const frameImage = new Image();
+			frameImage.src = selectedFrameSrc; // 選択された画像ソースを使用
+
+			// 4. 画像の読み込みが成功した時の処理
+			frameImage.onload = () => {
+				// 枠画像のサイズを調整 (動画の幅の50%に)
+				const frameWidth = photoCanvas.width * 0.5;
+				const frameHeight = frameWidth * (frameImage.naturalHeight / frameImage.naturalWidth);
+
+				// 枠画像を描画する位置を計算 (右下に配置)
+				const frameX = photoCanvas.width - frameWidth;
+				const frameY = photoCanvas.height - frameHeight;
+
+				// Canvasに枠画像を描画
+				context.drawImage(frameImage, frameX, frameY, frameWidth, frameHeight);
+
+				// 5. 合成した画像をダウンロード
+				photoCanvas.toBlob((blob) => {
+					if (blob) {
+						const url = URL.createObjectURL(blob);
+						const a = document.createElement('a');
+						const now = new Date();
+						const filename = `aomori_photo_${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}.png`;
+                    
+						a.href = url;
+						a.download = filename;
+						document.body.appendChild(a);
+						a.click();
+						document.body.removeChild(a);
+						URL.revokeObjectURL(url);
+                    
+						alert("写真をダウンロードしました！");
+					}
+					else {
+						alert("画像データの作成に失敗しました。");
+					}
+				}, 'image/png');
+			};
+
+			// 6. 画像の読み込みが失敗した時の処理
+			frameImage.onerror = () => {
+				alert("選択されたフレーム画像の読み込みに失敗しました。枠画像なしでダウンロードします。");
+				// 枠なしでダウンロードするフォールバック処理
+				photoCanvas.toBlob((blob) => {
+					if (blob) {
+						const url = URL.createObjectURL(blob);
+						const a = document.createElement('a');
+						const now = new Date();
+						const filename = `aomori_photo_noframe_${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}_${now.getHours().toString().padStart(2, '0')}${now.getMinutes().toString().padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}.png`;
+                    
+						a.href = url;
+						a.download = filename;
+						document.body.appendChild(a);
+						a.click();
+						document.body.removeChild(a);
+						URL.revokeObjectURL(url);
+		
+						alert("写真をダウンロードしました！");
 					} else {
 						alert("画像データの作成に失敗しました。");
 					}
@@ -452,5 +646,4 @@ window.addEventListener('DOMContentLoaded', () => {
  		{ enableHighAccuracy: true }
 		);
  	});
-
 });
