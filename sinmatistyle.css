@@ -95,7 +95,6 @@ https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25
 	display: flex;
 	gap: 10px;
 	justify-content: flex-start;
-	margin: 2% 5%;
 }
 #shutter-button{/*撮影ボタン*/
 	position: absolute;  /* 追加 */

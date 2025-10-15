@@ -160,7 +160,8 @@
 
 			window.addEventListener('resize', handleCameraResize);
 			window.addEventListener('scroll', handleCameraScroll);
-		})		.catch(err => {
+		})
+		.catch(err => {
 			alert("カメラの起動に失敗しました。");
 			console.error(err);
 		});

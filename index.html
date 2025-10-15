@@ -24,18 +24,20 @@
 			<img src="kkrn_icon_map_2.png" alt="mapへのリンク">
 		</a>
 	</div>
+	<div id="kamerabutton">
+		<button id="kidou">カメラ起動</button>
+		<button id="teishi" style="display: none;">カメラ停止</button>
+	</div>
 	<div id="frame-selector">
 		<p><strong>フレームを選択</strong></p>
 		<input type="radio" id="frame1" name="frame_choice" value="kameratoukawaku.png" checked>
 		<label for="frame1">フレーム1</label>
 		<input type="radio" id="frame2" name="frame_choice" value="新丸くん4.png">
 		<label for="frame2">フレーム2</label>
-	</div>
-	<div id="kamerabutton">
-		<button id="kidou">カメラ起動</button>
-		<button id="teishi" style="display: none;">カメラ停止</button>
-	</div>
 
+	</div>
+	<br>
+	<br>
 	<div id="video-container">
 		<video id="video" autoplay playsinline muted style="display: none;"></video>
 		<img id="kameratoukawaku" src="kameratoukawaku.png" alt="カメラ枠" style="display: none;">
