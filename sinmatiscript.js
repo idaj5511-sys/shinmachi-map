@@ -137,7 +137,7 @@
 		}
 
 		navigator.mediaDevices.getUserMedia({
-			video: { facingMode: { ideal: "environment" } }
+			video: { facingMode: "environment" }
 		})
 		.then(stream => {
 			cameraStream = stream;
