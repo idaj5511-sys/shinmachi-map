@@ -7,13 +7,35 @@
   <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
 
 <style>
+/*ねぶたん＆はねとん右*/
+#top-right-imageright {
+  position: absolute;
+  top: -20px;       /* 下からの距離 */
+  right: 5px;     /* 右からの距離 */
+  width: 180px;     /* 画像サイズ調整 */
+  height: auto;
+  z-index: 2000;   /* 前面に表示 */
+  cursor: pointer;
+}
+/*ねぶたん＆はねとん左*/
+#top-right-imageleft {
+  position: absolute;
+  transform: scaleX(-1);
+  top: -20px;       /* 下からの距離 */
+  left: 5px;     /* 右からの距離 */
+  width: 180px;     /* 画像サイズ調整 */
+  height: auto;
+  z-index: 2000;   /* 前面に表示 */
+  cursor: pointer;
+}
+
 /* サイドパネル全体 */
 #side-panel {
   position: fixed;
   top: 0;
   right: -500px; /* 初期は非表示 */
   width: 400px;
-  height: 100%;
+  height: auto;
   background: url('./りんご背景.png') no-repeat center center;
   background-size: cover; /* ← 写真を全体にフィット */
   box-shadow: -3px 0 15px rgba(0,0,0,0.2);
@@ -21,7 +43,7 @@
   overflow-y: auto;
   transition: right 0.4s ease;
   font-family: 'Helvetica Neue', sans-serif;
-  z-index: 1000;
+  z-index: 9999;
   border-left: 1px solid #eee;
 }
 #side-panel::before {
@@ -163,7 +185,7 @@
 /* アコーディオン全体 */
 #accordion {
   position: absolute;
-  top: 10px;
+  top: 110px;
   left: 10px;
   width: 180px; /* 少し広くして余裕 */
   background: #fffaf8; /* 淡いクリームピンクの背景 */
@@ -228,11 +250,94 @@
     color: #0056b3;
 }
 
+/*カメラ画像*/
+#bottom-link {
+  margin-top: 10px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000; /* マップより上に表示 */
+}
+
+#bottom-link a {
+  display: flex;              /* ← 横並びにする */
+  align-items: center;        /* 縦位置をそろえる */
+  text-decoration: none;      /* 下線を消す */
+  background: rgba(255, 255, 255, 0.8); /* 文字の背景を少し白く */
+  padding: 6px 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: transform 0.2s;
+}
+
+
+#bottom-link img {
+  width: 80px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+#bottom-link img:hover {
+  transform: scale(1.1);
+}
+
+/* タイトル部分（マップの上に配置） */
+#map-header {
+  width: 100%;
+  background: #ffffff); /* やわらかいピンク系グラデーション */
+  padding: 18px 0;
+  text-align: center;
+  border-bottom: 2px solid #f5b5b5;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#map-header h1 {
+  margin: 0;
+  font-size: 2em;
+  color: #a22222; /* 落ち着いたりんごレッド */
+  font-weight: bold;
+  letter-spacing: 2px;
+  font-family: "游ゴシック", "Hiragino Kaku Gothic ProN", sans-serif;
+}
+
+body {
+  background: #fff5f5; /* ほんのり薄ピンク */
+}
+
+/*コピーライト*/
+#copyright {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #fff5f5;
+  padding: 10px 0;
+  text-align: center;
+  color: #777;
+  border-top: 1px solid #e5bcbc;
+  font-size: 13px;
+  z-index: 5000; /* サイドパネルより下、地図より上 */
+}
+
+#mapid {
+  width: 100%;
+  min-height: 75vh; /* ← PCではこれくらいがちょうど良い */
+}
+
+<link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet">
+
   </style>
 </head>
 
 <body>
-  <div id="mapid" style="width: 100%; height: 600px"></div>
+  <body>
+  <header id="map-header">
+    <img id="top-right-imageright" src="./kameratoukawaku.png" alt="icon">
+    <img id="top-right-imageleft" src="./kameratoukawaku.png" alt="icon">
+    <h1>新町にぎわいマップ</h1>
+  </header>
+
+  <div id="mapid"></div>
 
   <!-- アコーディオンメニュー -->
   <div id="accordion">
@@ -261,6 +366,15 @@
   <button id="close-btn">×閉じる</button>
   <div id="panel-content">ここに詳細が入ります</div>
   </div>
+  <div id="bottom-link">
+  <a href="nextpage.html">
+    <img src="./カメラ.png" />
+    <span class="link-text">←カメラで探す</span>
+  </a>
+</div>
   <script src="script.js"></script>
+<footer id="copyright">
+  c 2025 Shinmachi Nigiwai Map. All Rights Reserved.
+</footer>
 </body>
 </html>
