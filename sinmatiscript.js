@@ -1,6 +1,7 @@
 ﻿window.addEventListener('DOMContentLoaded', () => {
 	const startCameraBtn = document.getElementById("kidou");
 	const stopCameraBtn = document.getElementById("teishi");
+	const switchCameraBtn = document.getElementById("camera-switch");
 	const video = document.getElementById("video");
 	const button = document.getElementById("button");
 	const img = document.getElementById("tapgazou");
@@ -15,6 +16,7 @@
 	const frameSelector = document.getElementById("frame-selector");
 
 	let cameraStream = null;
+	let currentFacingMode = "environment";
 
 	function updateLiveFrame() {
 		const selectedValue = document.querySelector('input[name="frame_choice"]:checked').value;
@@ -47,34 +49,8 @@
 		}
 	});
 
-/*	function updateFramePosition() {
-		if (video.style.display === "none") return; // 非表示なら処理しない
 
-	// 現在表示されているフレーム要素を取得
-		const currentFrame = document.querySelector('#video-container img[style*="display: block"]');
-		if (!currentFrame) return; // 表示中のフレームがなければ何もしない
-
-		const rect = video.getBoundingClientRect();
-		const videoWidth = rect.width;
-		const videoHeight = rect.height;
-
-		const frameWidth = videoWidth * 0.5;
-		// currentFrameの自然サイズを使うように変更
-		const frameHeight = frameWidth * (currentFrame.naturalHeight / currentFrame.naturalWidth);
-
-		currentFrame.style.width = `${frameWidth}px`;
-		currentFrame.style.height = `${frameHeight}px`;
-	
-		const offsetX = video.offsetLeft;
-		const offsetY = video.offsetTop;
-
-		currentFrame.style.position = "absolute";
-		currentFrame.style.left = `${offsetX + videoWidth - frameWidth}px`;
-		currentFrame.style.top = `${offsetY + videoHeight - frameHeight}px`;
-		currentFrame.style.zIndex = 20;
-	}*/
-
-function updateFramePosition() {
+	function updateFramePosition() {
 		if (video.style.display === "none") return; // 非表示なら処理しない
 
 		// 現在表示されているフレーム要素を取得
@@ -152,7 +128,7 @@ function updateFramePosition() {
 		updateShutterButtonPosition();
 	};
 	// カメラ起動ボタン
-	startCameraBtn.addEventListener("click", () => {
+	/*startCameraBtn.addEventListener("click", () => {
 		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
 			alert("カメラにアクセスできません。");
 			return;
@@ -188,7 +164,63 @@ function updateFramePosition() {
 			console.error(err);
 		});
 	});
+	*/
+// A. カメラ起動ロジックの関数化
+	function startCamera(facingMode) {
+		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+			alert("カメラにアクセスできません。");
+			return;
+		}
+
+		// 既存のストリームがあれば停止
+		if (cameraStream) {
+			cameraStream.getTracks().forEach(track => track.stop());
+		}
 	
+		// facingModeを引数で受け取る
+		navigator.mediaDevices.getUserMedia({
+			video: { facingMode: facingMode }
+		})
+		.then(stream => {
+			cameraStream = stream;
+			currentFacingMode = facingMode; // 状態を更新
+		
+			video.srcObject = stream;
+			video.style.display = "block"; 
+		
+			updateLiveFrame();
+			stopCameraBtn.style.display = "inline";
+			startCameraBtn.style.display = "none";
+			switchCameraBtn.style.display = "inline"; // ?? 切替ボタンを表示
+			frameSelector.style.display = "block";
+
+			video.addEventListener('loadedmetadata', () => {
+				updateFramePosition();
+				if (shutterButton) {
+					shutterButton.style.display = "block";
+					updateShutterButtonPosition();
+				}
+			}, { once: true });
+
+			window.addEventListener('resize', handleCameraResize);
+			window.addEventListener('scroll', handleCameraScroll);
+		})
+		.catch(err => {
+			alert(`カメラの起動に失敗しました。現在のモード: ${facingMode}`);
+			console.error(err);
+			// 起動に失敗したらUIをリセット
+			stopCameraBtn.style.display = "none";
+			startCameraBtn.style.display = "inline";
+			switchCameraBtn.style.display = "none";
+			video.style.display = "none";
+		});
+	}
+
+	// B. 起動ボタンのイベントリスナーを修正
+	startCameraBtn.addEventListener("click", () => {
+		// 起動ボタンが押されたら、デフォルトの背面カメラで起動
+		startCamera("environment"); 
+	});
 	// カメラ停止ボタン
 	stopCameraBtn.addEventListener("click", () => {
 		if (cameraStream) {
@@ -202,6 +234,7 @@ function updateFramePosition() {
 		frame2.style.display = "none"; 
 		stopCameraBtn.style.display = "none"; // 停止ボタン非表示
 		startCameraBtn.style.display = "inline"; // 起動ボタン表示
+		switchCameraBtn.style.display = "none";
 		frameSelector.style.display = "none";
 		
 		// 撮影ボタンと写真を非表示にする
@@ -217,6 +250,15 @@ function updateFramePosition() {
 		}
 		window.removeEventListener('resize', handleCameraResize);
 		window.removeEventListener('scroll', handleCameraScroll);
+	});
+
+	//  カメラ切り替えボタン
+	switchCameraBtn.addEventListener("click", () => {
+		// 現在のモードが 'environment' (背面) なら 'user' (前面) に
+		const newFacingMode = currentFacingMode === "environment" ? "user" : "environment";
+		
+		// 新しいモードでカメラを再起動
+		startCamera(newFacingMode);
 	});
 
 	// 撮影ボタンのクリックイベント

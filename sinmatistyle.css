@@ -118,13 +118,6 @@ https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fjp%2F%25
 	font-size: 100%;
 	border: none;
 }
-#video-container {/*カメラの映像・カメラ枠*/
-	position: relative;
-	width: 100%;
-	max-width: 500px;
-	margin: 0 auto 10px;
-	display: inline-block;
-}
 #kameratoukawaku {/*カメラ枠*/
 	position: absolute;
 	pointer-events: none;
@@ -152,4 +145,34 @@ body {/*中央揃え*/
 }
 #frame-selector {
   display: none;
+}
+#video-container {/*カメラの映像・カメラ枠*/
+	position: relative;
+	width: 100%;
+	max-width: 500px;
+	margin: 0 auto 10px;
+	display: inline-block;
+}
+
+/* カメラ切り替えボタンを絶対配置で左下に固定 */
+#camera-switch {
+    position: absolute;
+    /* 左下から少し余白を持たせる */
+    bottom: 20px; /* 下端からの距離 */
+    left: 10px; /* 左端からの距離 */
+    z-index: 30; /* 映像やフレームより手前に表示 */
+    
+    /* スタイル調整（背景を透明にするなど）*/
+    background: rgba(0, 0, 0, 0.5); /* 半透明の背景 */
+    border: none;
+    padding: 5px;
+    border-radius: 50%; /* 丸くする */
+    cursor: pointer;
+}
+
+/* ボタン内の画像サイズ調整 */
+#camera-switch img {
+    width: 40px; /* 画像のサイズを調整 */
+    height: 40px;
+    display: block;
 }
